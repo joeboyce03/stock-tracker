@@ -36,3 +36,24 @@ export default function LoginPage() {
     <>
       <Navbar />
       <div style={{ padding: '1rem' }}>
+        <h1>登入 Login</h1>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
+        />
+        <input
+          type="password"
+          placeholder="密碼"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
+        />
+        <button onClick={handleLogin}>登入</button>
+        <p>{message}</p>
+      </div>
+    </>
+  );
+}
