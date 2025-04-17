@@ -1,41 +1,42 @@
-// pages/watchlist.js
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Navbar from '../components/Navbar';
 
-export default function Watchlist() {
+const Watchlist = () => {
   const [stocks, setStocks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchWatchlist = async () => {
-      try {
-        const response = await fetch('/api/watchlist');
-        if (!response.ok) throw new Error('Failed to load data');
-        const data = await response.json();
-        setStocks(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWatchlist();
+    fetch('/api/watchlist')
+      .then(res => res.json())
+      .then(data => setStocks(data));
   }, []);
 
-  if (loading) return <p>載入中...</p>;
-  if (error) return <p>錯誤：{error}</p>;
-
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>自選股清單</h2>
-      <ul>
-        {stocks.map((stock, index) => (
-          <li key={index}>
-            {stock.name} ({stock.code})：${stock.price}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Navbar />
+      <main style={{ padding: '1.5rem', fontFamily: 'Arial' }}>
+        <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>自選股清單</h2>
+        <div style={{ display: 'grid', gap: '1rem' }}>
+          {stocks.map(stock => (
+            <div key={stock.symbol} style={{
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              padding: '1rem',
+              backgroundColor: '#f9f9f9',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+            }}>
+              <strong style={{ fontSize: '1.25rem' }}>{stock.name}</strong>
+              <p style={{ margin: '0.25rem 0', color: '#666' }}>({stock.symbol})</p>
+              <p style={{ margin: 0 }}>
+                <span style={{ fontWeight: 'bold', color: '#008000' }}>
+                  ${stock.price.toFixed(2)}
+                </span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
+    </>
   );
-}
+};
+
+export default Watchlist;
