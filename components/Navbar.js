@@ -1,12 +1,14 @@
-import Link from 'next/link';
+// components/Navbar.js
+
+import React from 'react';
 import './Navbar.css';
 
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <Link href="/">首頁</Link>
-      <Link href="/login">登入</Link>
-      <Link href="/watchlist">自選股</Link>
+      <a href="/">首頁</a>
+      <a href="/login">登入</a>
+      <a href="/watchlist">自選股</a>
     </nav>
   );
 };
