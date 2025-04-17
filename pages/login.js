@@ -1,34 +1,30 @@
-// stock-tracker/pages/login.js
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 
-export default function LoginPage() {
-  const router = useRouter();
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handleLogin = async () => {
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  const validate = () => {
+    const newErrors = {};
+    if (!email.includes('@')) {
+      newErrors.email = '請輸入有效的 Email';
+    }
+    if (password.length < 6) {
+      newErrors.password = '密碼至少需要 6 個字元';
+    }
+    return newErrors;
+  };
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessage('登入成功，導向首頁...');
-        setTimeout(() => router.push('/'), 1500);
-      } else {
-        setMessage(data.message || '登入失敗');
-      }
-    } catch (err) {
-      setMessage('登入錯誤，請稍後再試');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      alert(`登入成功（模擬）\nEmail: ${email}\nPassword: ${password}`);
+      setErrors({});
     }
   };
 
@@ -36,23 +32,44 @@ export default function LoginPage() {
     <>
       <Navbar />
       <div style={{ padding: '1rem' }}>
-        <h1>登入 Login</h1>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
-        />
-        <input
-          type="password"
-          placeholder="密碼"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
-        />
-        <button onClick={handleLogin}>登入</button>
-        <p>{message}</p>
+        <h2>登入 Login</h2>
+        <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
+          <div style={{ marginBottom: '1rem' }}>
+            <label>Email：</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ width: '100%', padding: '0.5rem' }}
+            />
+            {errors.email && (
+              <p style={{ color: 'red', margin: '0.5rem 0' }}>{errors.email}</p>
+            )}
+          </div>
+
+          <div style={{ marginBottom: '1rem' }}>
+            <label>密碼：</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ width: '100%', padding: '0.5rem' }}
+            />
+            {errors.password && (
+              <p style={{ color: 'red', margin: '0.5rem 0' }}>{errors.password}</p>
+            )}
+          </div>
+
+          <button type="submit" style={{
+            backgroundColor: '#0070f3',
+            color: 'white',
+            padding: '0.5rem 1rem',
+            border: 'none',
+            cursor: 'pointer'
+          }}>
+            登入
+          </button>
+        </form>
       </div>
     </>
   );
