@@ -1,3 +1,4 @@
+
 # Stock Tracker Web App
 
 A full-featured stock tracking app with technical indicators, user watchlist, and real-time updates.
@@ -16,6 +17,7 @@ npm run dev
 ```
 
 ## Folder Structure
+
 ```
 - pages/
   - index.js
@@ -25,15 +27,19 @@ npm run dev
 - components/
 - data/
 - styles/
+- lib/
+- public/images/
+- docs/
 ```
 
-## 系統架構簡介
+## Architecture Overview
 
-![網站系統架構](./docs/architecture-overview.png)
+![Architecture Overview](/images/architecture-overview.png)
 
-## 手機 UI 畫面草稿（V3.1）
+## Mobile Wireframe (V3.1)
 
-![手機畫面草稿](./docs/mobile-wireframe-v3.1.png)
+![Mobile Wireframe V3.1](/images/mobile-wireframe-v3.1.png)
 
 ## Author
+
 Matt（可靠度工程師 / 技術投資分析者）
