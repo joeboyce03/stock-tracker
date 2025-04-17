@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import dynamic from 'next/dynamic';
 
-// 延遲載入 StockChart，避免 SSR 時載入失敗
-const StockChart = dynamic(() => import('../components/StockChart'), { ssr: false });
+// 使用動態載入方式引入 client-only 的 StockChartClient
+const StockChart = dynamic(() => import('../components/StockChartClient'), { ssr: false });
 
 const Watchlist = () => {
   const [stocks, setStocks] = useState([]);
