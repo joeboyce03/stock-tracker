@@ -1,47 +1,34 @@
+import React, { useEffect, useState } from 'react';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-import { useEffect } from 'react'
-import Chart from 'chart.js/auto'
+const StockChart = ({ symbol }) => {
+  const [data, setData] = useState([]);
 
-export default function StockChart({ stock }) {
   useEffect(() => {
-    const canvas = document.getElementById('chart')
-    const ctx = canvas.getContext('2d')
-    if (window.chartInstance) {
-      window.chartInstance.destroy()
-    }
-    window.chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: stock.dates,
-        datasets: [
-          {
-            label: '收盤價',
-            data: stock.prices,
-            borderColor: 'blue',
-            tension: 0.1
-          },
-          {
-            label: 'MA5',
-            data: stock.ma5,
-            borderColor: 'green',
-            tension: 0.1
-          },
-          {
-            label: 'MA20',
-            data: stock.ma20,
-            borderColor: 'orange',
-            tension: 0.1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: false }
-        }
-      }
-    })
-  }, [stock])
+    fetch('/api/chart')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
 
-  return <canvas id="chart" width="800" height="400"></canvas>
-}
+  return (
+    <div style={{ width: '100%', height: 400 }}>
+      <h3 style={{ textAlign: 'center' }}>{symbol} - MACD / KD 技術指標</h3>
+      <ResponsiveContainer>
+        <LineChart data={data}>
+          <CartesianGrid stroke="#ccc" />
+          <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="MACD.macd" stroke="#8884d8" name="MACD" dot={false} />
+          <Line type="monotone" dataKey="MACD.signal" stroke="#82ca9d" name="Signal" dot={false} />
+          <Line type="monotone" dataKey="MACD.histogram" stroke="#ffc658" name="Histogram" dot={false} />
+          <Line type="monotone" dataKey="KD.k" stroke="#ff7300" name="K值" dot={false} />
+          <Line type="monotone" dataKey="KD.d" stroke="#387908" name="D值" dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default StockChart;

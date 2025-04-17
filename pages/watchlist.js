@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import StockChart from '../components/StockChart';
 
 const Watchlist = () => {
   const [stocks, setStocks] = useState([]);
+  const [selectedSymbol, setSelectedSymbol] = useState(null);
 
   useEffect(() => {
     fetch('/api/watchlist')
@@ -31,9 +33,21 @@ const Watchlist = () => {
                   ${stock.price.toFixed(2)}
                 </span>
               </p>
+              <button
+                onClick={() => setSelectedSymbol(stock.symbol)}
+                style={{ marginTop: '0.5rem', padding: '0.4rem 1rem', border: 'none', borderRadius: '4px', background: '#0070f3', color: 'white', cursor: 'pointer' }}
+              >
+                查看圖表
+              </button>
             </div>
           ))}
         </div>
+
+        {selectedSymbol && (
+          <div style={{ marginTop: '2rem' }}>
+            <StockChart symbol={selectedSymbol} />
+          </div>
+        )}
       </main>
     </>
   );
