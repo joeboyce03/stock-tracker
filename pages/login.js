@@ -1,7 +1,7 @@
 // stock-tracker/pages/login.js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Navbar from '@/components/Navbar';
+import Navbar from '../components/Navbar';
 
 export default function LoginPage() {
   const router = useRouter();
