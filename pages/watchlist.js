@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import StockChart from '../components/StockChart';
+import dynamic from 'next/dynamic';
+
+// 延遲載入 StockChart，避免 SSR 時載入失敗
+const StockChart = dynamic(() => import('../components/StockChart'), { ssr: false });
 
 const Watchlist = () => {
   const [stocks, setStocks] = useState([]);
@@ -35,7 +38,15 @@ const Watchlist = () => {
               </p>
               <button
                 onClick={() => setSelectedSymbol(stock.symbol)}
-                style={{ marginTop: '0.5rem', padding: '0.4rem 1rem', border: 'none', borderRadius: '4px', background: '#0070f3', color: 'white', cursor: 'pointer' }}
+                style={{
+                  marginTop: '0.5rem',
+                  padding: '0.4rem 1rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  background: '#0070f3',
+                  color: 'white',
+                  cursor: 'pointer'
+                }}
               >
                 查看圖表
               </button>
