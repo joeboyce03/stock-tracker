@@ -1,5 +1,20 @@
+'use client';
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+// 延遲加載 Recharts
+let LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer;
+
+if (typeof window !== 'undefined') {
+  const Recharts = require('recharts');
+  LineChart = Recharts.LineChart;
+  Line = Recharts.Line;
+  CartesianGrid = Recharts.CartesianGrid;
+  XAxis = Recharts.XAxis;
+  YAxis = Recharts.YAxis;
+  Tooltip = Recharts.Tooltip;
+  Legend = Recharts.Legend;
+  ResponsiveContainer = Recharts.ResponsiveContainer;
+}
 
 const StockChart = ({ symbol }) => {
   const [data, setData] = useState([]);
@@ -9,6 +24,8 @@ const StockChart = ({ symbol }) => {
       .then(res => res.json())
       .then(setData);
   }, []);
+
+  if (!LineChart) return <p style={{ textAlign: 'center' }}>📉 圖表元件未載入</p>;
 
   return (
     <div style={{ width: '100%', height: 400 }}>
